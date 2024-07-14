@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 471086076960564750}
   - component: {fileID: 7625809912384407854}
+  - component: {fileID: 1121494212207224472}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4724318328180528599}
@@ -47,7 +48,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   faceRenderer: {fileID: 7736354534168260359}
   backRenderer: {fileID: 8641942065678683484}
-  BaseMaterial: {fileID: 0}
+  BaseMaterial: {fileID: 2100000, guid: de0e1bb77e617a94280857c2e3a25125, type: 2}
+--- !u!65 &1121494212207224472
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111883894299144779}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.01, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7611287982670106253
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,7 +119,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 227f549cb23a7ae4581b8d693c121355,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 75
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 227f549cb23a7ae4581b8d693c121355,
         type: 3}
@@ -208,7 +230,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 227f549cb23a7ae4581b8d693c121355,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 75
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 227f549cb23a7ae4581b8d693c121355,
         type: 3}

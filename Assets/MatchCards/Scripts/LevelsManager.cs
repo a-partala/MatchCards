@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,9 +14,15 @@ public class LevelsManager
     private int levelID;
     private int levelCounter;
 
-    public LevelsManager() 
+    public LevelsManager(Board board) 
     {
+        board.OnAllCardsMatched += Win;
         Load();
+    }
+
+    private void Win()
+    {
+
     }
 
     public void LauchLevel()

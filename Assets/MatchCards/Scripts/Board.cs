@@ -1,19 +1,14 @@
-
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using static LevelsManager;
 using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Deck deck;
+    public event Action OnAllCardsMatched;
 
-    // Update is called once per frame
-    void Update()
+    public void PrepareGame(LevelData data)
     {
-        
+        deck.CreateCards(data.PairsAmount);
     }
 }

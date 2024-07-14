@@ -4,16 +4,23 @@ using UnityEngine;
 
 public class Initializer : MonoBehaviour
 {
-    [SerializeField] private Deck deck;
+    [SerializeField] private Board board;
     private LevelsManager levelsController;
+    private TouchController touchController;
 
-    public void Awake()
+    private void Awake()
     {
         
     }
 
-    public void Start()
+    private void Start()
     {
-        levelsController = new();
+        touchController = new();
+        levelsController = new(board);
+    }
+
+    private void Update()
+    {
+        touchController.Update();
     }
 }
