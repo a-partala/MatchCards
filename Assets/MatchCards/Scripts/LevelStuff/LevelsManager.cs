@@ -1,21 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class LevelsManager
 {
-    [SerializeField]
-    public class LevelData
-    {
-        public int PairsAmount = 2;
-        public float Timer = 10;
-    }
     private int levelID;
     private int levelCounter;
+    private Board board;
+    private LevelsConfig levelsConfig;
 
-    public LevelsManager(Board board) 
+    public LevelsManager(LevelsConfig levelsConfig, Board board)
     {
+        this.levelsConfig = levelsConfig;
+        this.board = board;
         board.OnAllCardsMatched += Win;
         Load();
     }
@@ -27,7 +20,7 @@ public class LevelsManager
 
     public void LauchLevel()
     {
-
+        board.PrepareLevel(levelsConfig.levels[levelID]);
     }
 
     private void Save()

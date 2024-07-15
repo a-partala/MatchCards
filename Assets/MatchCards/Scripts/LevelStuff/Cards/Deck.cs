@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    [SerializeField] private float spacing = 0.2f;
+    public Vector2 CardScale = new Vector2();
+    public Vector2 Spacing;
     [SerializeField] private Card cardPrefab;
     [SerializeField] private Material baseMaterial;
     [SerializeField] private TexturesConfig cardFaces;
@@ -12,10 +13,10 @@ public class Deck : MonoBehaviour
 
     [HideInInspector] public List<Card> Cards = new();
     private int backID = 0;
-    private int groupSize = 2;
+    public readonly int GroupSize = 2;
     public event Action OnMatch;
 
-    public void CreateCards(int pairsAmount)
+    public void CreateCards(int pairsAmount, float scale = 1f)
     {
         RemoveCards();
         var back = GetBackMaterial(backID);
@@ -25,9 +26,10 @@ public class Deck : MonoBehaviour
             var face = new Material(baseMaterial);
             face.mainTexture = texture;
 
-            for(int j = 0; j < groupSize; j++)
+            for(int j = 0; j < GroupSize; j++)
             {
                 var card = Pool.Get(cardPrefab);
+                card.transform.localScale = new Vector3(CardScale.x, CardScale.y, 1) * scale;
                 card.Initialize(back, face);
                 Cards.Add(card);
             }

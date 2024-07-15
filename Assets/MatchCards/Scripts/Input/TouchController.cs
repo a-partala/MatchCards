@@ -17,10 +17,10 @@ public class TouchController
 
     public TouchController()
     {
+        Instance = this;
 #if UNITY_EDITOR
         ResetStatic();//Unity doesn't make it by itself
 #endif
-        Instance = this;
         //Get all canvases for blocking touches in menus. You can just pause the system, but it needs more attention
         graphicRaycasters = Object.FindObjectsByType<GraphicRaycaster>(FindObjectsInactive.Include, FindObjectsSortMode.None).ToList();
     }
@@ -36,7 +36,7 @@ public class TouchController
 
     public static void ResetStatic()
     {
-        PauseObjects = null;
+        PauseObjects.Clear();
         IsPaused = false;
         Clear();
     }

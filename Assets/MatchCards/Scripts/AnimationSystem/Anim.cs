@@ -4,6 +4,21 @@ using UnityEngine;
 
 public static class Anim
 {
+    public static Coroutine RotateTo(this MonoBehaviour mono, Vector3 targetEulers, AnimationSettings animSettings, Action finalAction = null)
+    {
+        var startEulers = mono.transform.position;
+        void frameAction(float t)
+        {
+            mono.transform.localEulerAngles = Vector3.Lerp(startEulers, targetEulers, t);
+        }
+
+        return LerpTo(mono, frameAction, animSettings, () =>
+        {
+            mono.transform.localEulerAngles = targetEulers;
+            finalAction?.Invoke();
+        });
+    }
+
     public static Coroutine MoveTo(this MonoBehaviour mono, Vector3 targetPos, AnimationSettings animSettings, Action finalAction = null)
     {
         var startPos = mono.transform.position;
@@ -41,7 +56,7 @@ public static class Anim
             Debug.LogError($"Anim>> Object you are trying to animate is null");
             return null;
         }
-        if(animSettings.Duration <= 0)
+        if(animSettings.Speed <= 0)
         {
             Debug.LogError($"Anim>> Incorrect {mono.name} anim's duration");
             return null;
@@ -57,7 +72,7 @@ public static class Anim
         while (t < 1f)
         {
             exp += Time.deltaTime;
-            t = exp / animSettings.Duration;
+            t = exp / animSettings.Speed;
 
             frameAction?.Invoke(animSettings.Ease.Evaluate(t));
 
