@@ -5,7 +5,7 @@ using UnityEngine;
 public struct Level
 {
     public int PairsAmount;
-    public float Timer;
+    public float TimerInSeconds;
 }
 
 [CreateAssetMenu(fileName = "LevelsConfig")]

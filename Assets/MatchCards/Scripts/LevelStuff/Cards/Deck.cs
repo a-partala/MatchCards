@@ -14,7 +14,8 @@ public class Deck : MonoBehaviour
     [HideInInspector] public List<Card> Cards = new();
     private int backID = 0;
     public readonly int GroupSize = 2;
-    public event Action OnMatch;
+    public event Action OnMatchEvent;
+    private List<Card> cardsBuffer = new();
 
     public void CreateCards(int pairsAmount, float scale = 1f)
     {
@@ -31,9 +32,72 @@ public class Deck : MonoBehaviour
                 var card = Pool.Get(cardPrefab);
                 card.transform.localScale = new Vector3(CardScale.x, CardScale.y, 1) * scale;
                 card.Initialize(back, face);
+                card.OnFlippedToFace += () =>
+                {
+                    CardToBuffer(card);
+                };
                 Cards.Add(card);
             }
         }
+    }
+
+    private void CardToBuffer(Card card)
+    {
+        if(cardsBuffer.Count >= GroupSize)
+        {
+            return;
+        }
+        cardsBuffer.Add(card);
+
+        if(cardsBuffer.Count == GroupSize)
+        {
+            TouchController.Clear();
+            TouchController.AddPauseReason(gameObject);
+            if (CheckMatch())
+            {
+                Invoke(nameof(CompleteBuffer), 0.66f);
+            }
+            else
+            {
+                Invoke(nameof(FlipBuffer), 0.66f);
+            }
+        }
+    }
+
+    private void FlipBuffer()
+    {
+        SetBuffer(Card.State.Back);
+    }
+
+    private void CompleteBuffer()
+    {
+        SetBuffer(Card.State.Hidden);
+        OnMatchEvent?.Invoke();
+    }
+
+    private void SetBuffer(Card.State state)
+    {
+        foreach (var item in cardsBuffer)
+        {
+            item.SetState(state);
+        }
+        cardsBuffer.Clear();
+        TouchController.RemovePauseReason(gameObject);
+    }
+
+    private bool CheckMatch()
+    {
+        var firstMaterial = cardsBuffer[0].GetFaceMat();
+
+        for (int i = 1; i < cardsBuffer.Count; i++)
+        {
+            if (cardsBuffer[i].GetFaceMat() != firstMaterial)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void RemoveCards()

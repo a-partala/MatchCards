@@ -51,7 +51,7 @@ public class Pool : MonoBehaviour
             Debug.LogError("Pool>> GameObject that you're trying to return is null");
             return;
         }
-        TouchController.PauseObjects.Remove(obj);
+        TouchController.RemovePauseReason(obj);
         if (objects.ContainsKey(obj))
         {
             objects[obj].Add(obj);

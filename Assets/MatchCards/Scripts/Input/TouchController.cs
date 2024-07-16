@@ -12,7 +12,7 @@ public class TouchController
     private List<GraphicRaycaster> graphicRaycasters;
     private bool clicked = false;
     private GameObject SelectedObject;
-    public static HashSet<GameObject> PauseObjects = new();
+    private List<GameObject> PauseReasons = new();//Need to stop touch system from different independed sources and resume when all them will be finished
     public static bool IsPaused = false;
 
     public TouchController()
@@ -27,16 +27,29 @@ public class TouchController
 
     public void Update()
     {
-        if (IsPaused || PauseObjects.Count > 0)
+        if (IsPaused || PauseReasons.Count > 0)
         {
             return;
         }
         ProcessTouch();
     }
 
+    public static void AddPauseReason(GameObject obj)
+    {
+        if (Instance.PauseReasons.Contains(obj))
+        {
+            return;
+        }
+        Instance.PauseReasons.Add(obj);
+    }
+
+    public static void RemovePauseReason(GameObject obj)
+    {
+        Instance.PauseReasons.Remove(obj);
+    }
+
     public static void ResetStatic()
     {
-        PauseObjects.Clear();
         IsPaused = false;
         Clear();
     }
@@ -61,7 +74,7 @@ public class TouchController
             Ray ray = Camera.main.ScreenPointToRay(touch.position);
             if (SelectedObject == null)
             {
-                var hits = Physics2D.RaycastAll(ray.origin - new Vector3(0, 0, 10), ray.direction);
+                var hits = Physics.RaycastAll(ray.origin, ray.direction);
                 if (hits.Length == 0 || hits[0].collider == null)
                 {
                     return;

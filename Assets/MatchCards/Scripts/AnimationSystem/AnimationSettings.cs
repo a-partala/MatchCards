@@ -2,8 +2,8 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class AnimationSettings
+public struct AnimationSettings
 {
-    public float Speed = 1f;
-    public Easing.Type Ease = Easing.Type.Linear;
+    public float Speed;
+    public Easing.Type Ease;
 }

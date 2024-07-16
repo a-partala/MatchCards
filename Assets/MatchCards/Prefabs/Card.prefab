@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 471086076960564750}
   - component: {fileID: 7625809912384407854}
   - component: {fileID: 1121494212207224472}
+  - component: {fileID: 480455338170877749}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -48,6 +49,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   faceRenderer: {fileID: 7736354534168260359}
   backRenderer: {fileID: 8641942065678683484}
+  animator: {fileID: 480455338170877749}
+  stateAnimKeysMap:
+    _serializedList:
+    - Key: 0
+      Value: StateToBack
+    - Key: 1
+      Value: StateToFace
+    - Key: 2
+      Value: StateToHidden
 --- !u!65 &1121494212207224472
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -69,6 +79,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 0.01}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &480455338170877749
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111883894299144779}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9511077d4bba183479f7d2cc9cf448b2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7611287982670106253
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +127,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8869313526247396456}
   - {fileID: 7468503483710666291}

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Initializer : MonoBehaviour
 {
+    [SerializeField] private LevelUI levelUI;
     [SerializeField] private Board board;
     [SerializeField] private LevelsConfig levelsConfig;
     private LevelsManager levelsController;
@@ -18,6 +19,7 @@ public class Initializer : MonoBehaviour
     {
         touchController = new();
         levelsController = new(levelsConfig, board);
+        levelUI.Initialize(levelsController);
 
         levelsController.LauchLevel();
     }
