@@ -1,16 +1,17 @@
-public static class SaveService
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+using Zenject;
+
+public class SaveService
 {
-    private static BaseStorage _storage;
-    private static BaseStorage storage
+    private static IStorage storage;
+
+
+    [Inject]
+    public SaveService(IStorage storage)
     {
-        get
-        {
-            if (_storage == null)
-            {
-                _storage = new PrefsStorage();
-            }
-            return _storage;
-        }
+        SaveService.storage = storage;
     }
 
     public static void SetInt(string key, int value)
@@ -22,4 +23,12 @@ public static class SaveService
     {
         return storage.GetInt(key, defaultValue);
     }
+
+#if UNITY_EDITOR
+    [MenuItem("Tools/Clear Save Data")]
+    public static void ClearJsonData()
+    {
+        storage.Clear();
+    }
+#endif
 }

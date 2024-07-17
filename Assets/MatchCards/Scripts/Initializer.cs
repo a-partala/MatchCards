@@ -12,7 +12,6 @@ public class Initializer : MonoBehaviour
 
     private void Awake()
     {
-        
     }
 
     private void Start()
