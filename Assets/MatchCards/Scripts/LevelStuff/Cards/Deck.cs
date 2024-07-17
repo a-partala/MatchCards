@@ -19,12 +19,12 @@ public class Deck : MonoBehaviour
 
     public void CreateCards(int pairsAmount, float scale = 1f)
     {
-        RemoveCards();
-        var back = GetBackMaterial(backID);
+        DeleteCards();
+        var back = GetBackMaterial(backID);//1 back material for all cards
         for (int i = 0; i < pairsAmount; i++)
         {
             var texture = cardFaces.textures[i];
-            var face = new Material(baseMaterial);
+            var face = new Material(baseMaterial);//1 face material for "linked" cards
             face.mainTexture = texture;
 
             for(int j = 0; j < GroupSize; j++)
@@ -41,11 +41,18 @@ public class Deck : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Helps to reset turn. But only in logic
+    /// </summary>
     public void ClearBuffer()
     {
         cardsBuffer.Clear();
     }
 
+    /// <summary>
+    /// Add card to the turn
+    /// </summary>
+    /// <param name="card"></param>
     private void CardToBuffer(Card card)
     {
         if(cardsBuffer.Count >= GroupSize)
@@ -57,7 +64,7 @@ public class Deck : MonoBehaviour
         if(cardsBuffer.Count == GroupSize)
         {
             TouchController.Clear();
-            TouchController.TryAddPauseReason(gameObject);
+            TouchController.TryAddPauseReason(gameObject);//because of next animations
             if (CheckMatch())
             {
                 Invoke(nameof(CompleteBuffer), 0.66f);
@@ -69,11 +76,18 @@ public class Deck : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Hides a turn's cards
+    /// </summary>
     private void FlipBuffer()
     {
         SetBuffer(Card.State.Back);
     }
 
+
+    /// <summary>
+    /// Completes the turn's cards
+    /// </summary>
     private void CompleteBuffer()
     {
         SetBuffer(Card.State.Hidden);
@@ -105,7 +119,7 @@ public class Deck : MonoBehaviour
         return true;
     }
 
-    private void RemoveCards()
+    private void DeleteCards()
     {
         foreach (var card in Cards)
         {
@@ -114,6 +128,11 @@ public class Deck : MonoBehaviour
         Cards.Clear();
     }
 
+    /// <summary>
+    /// Allows you to use many back skins
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     private Material GetBackMaterial(int id)
     {
         if (id < 0 || id >= cardBacks.textures.Length)

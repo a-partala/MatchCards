@@ -7,13 +7,13 @@ using UnityEngine.UI;
 public class TouchController
 {
     private static TouchController Instance;
-    private ITouchable touchAble;
     private RaycastHit hit;
-    private List<GraphicRaycaster> graphicRaycasters;
+    private List<GraphicRaycaster> graphicRaycasters;//Canvases that can be included in system. It allows you to block rays by UI
     private bool clicked = false;
-    private GameObject SelectedObject;
+    private GameObject SelectedObject;//Operated object
+    private ITouchable touchable;//Operated ITouchable (SelectedObject's)
     private List<GameObject> PauseReasons = new();//Need to stop touch system from different independed sources and resume when all them will be finished
-    public static bool IsPaused = false;
+    public static bool IsPaused = false;//The fastest way to stop the system. But it reqiers more control than 'PauseReasons'
 
     public TouchController()
     {
@@ -34,6 +34,11 @@ public class TouchController
         ProcessTouch();
     }
 
+    /// <summary>
+    /// Add reason to stop touch system.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static bool TryAddPauseReason(GameObject obj)
     {
         if (Instance.PauseReasons.Contains(obj))
@@ -44,23 +49,37 @@ public class TouchController
         return true;
     }
 
+    /// <summary>
+    /// Remove reason to stop touch system.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static void RemovePauseReason(GameObject obj)
     {
         Instance.PauseReasons.Remove(obj);
     }
 
+    /// <summary>
+    /// Unity doesn't clears static fields
+    /// </summary>
     public static void ResetStatic()
     {
         IsPaused = false;
         Clear();
     }
 
+    /// <summary>
+    /// Useful when you need to stop touch system straight in the input process. Some uncleared variables can affect input after resume
+    /// </summary>
     public static void Clear()
     {
         Instance.SelectedObject = null;
         Instance.clicked = false;
     }
 
+    /// <summary>
+    /// Just main logic
+    /// </summary>
     private void ProcessTouch()
     {
         if (Input.touchCount > 0)
@@ -81,9 +100,9 @@ public class TouchController
                     return;
                 }
                 SelectedObject = hits[0].collider.gameObject;
-                touchAble = SelectedObject.GetComponent<ITouchable>();
+                touchable = SelectedObject.GetComponent<ITouchable>();
             }
-            if (touchAble == null)
+            if (touchable == null)
             {
                 SelectedObject = null;
                 return;
@@ -93,13 +112,18 @@ public class TouchController
         }
     }
 
+    /// <summary>
+    /// Invoke touch actions
+    /// </summary>
+    /// <param name="touch"></param>
+    /// <param name="hit"></param>
     private void ProcessActions(Touch touch, RaycastHit hit)
     {
         switch (touch.phase)
         {
             case TouchPhase.Began:
                 clicked = true;
-                touchAble.OnTouchDown();
+                touchable.OnTouchDown();
                 break;
             case TouchPhase.Stationary:
                 if (!clicked)
@@ -107,7 +131,7 @@ public class TouchController
                     SelectedObject = null;
                     return;
                 }
-                touchAble.OnTouchStatic();
+                touchable.OnTouchStatic();
                 break;
             case TouchPhase.Moved:
                 if (!clicked)
@@ -115,7 +139,7 @@ public class TouchController
                     SelectedObject = null;
                     return;
                 }
-                touchAble.OnTouchMove();
+                touchable.OnTouchMove();
                 break;
             case TouchPhase.Ended:
                 if (!clicked)
@@ -123,13 +147,18 @@ public class TouchController
                     SelectedObject = null;
                     return;
                 }
-                touchAble.OnTouchUp();
+                touchable.OnTouchUp();
                 SelectedObject = null;
                 clicked = false;
                 break;
         }
     }
 
+    /// <summary>
+    /// Tells you if touch blocked by UI (in canvas from 'graphicRaycasters')
+    /// </summary>
+    /// <param name="touch"></param>
+    /// <returns></returns>
     private bool IsBlockedByUI(Touch touch)
     {
         PointerEventData pointerEventData = new PointerEventData(EventSystem.current)

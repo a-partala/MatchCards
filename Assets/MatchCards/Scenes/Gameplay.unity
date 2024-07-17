@@ -1502,7 +1502,7 @@ PrefabInstance:
     - target: {fileID: 7916908004321383737, guid: 490dde5c50b200347ae825df1f134304,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -227.8
+      value: -227.79999
       objectReference: {fileID: 0}
     - target: {fileID: 7916908004321383737, guid: 490dde5c50b200347ae825df1f134304,
         type: 3}
@@ -2298,8 +2298,8 @@ MonoBehaviour:
     Speed: 0.04
     Ease: 2
   shuffleAnim:
-    Speed: 0.15
-    Ease: 2
+    Speed: 0.2
+    Ease: 3
   pauseAtShuffle: 2
   cardsStartPoint: {x: 0, y: -10, z: 0}
   deck: {fileID: 58694831}

@@ -135,7 +135,7 @@ public class Board : MonoBehaviour
                 var card = cards.GetRandom();
                 shuffledMatrix[i, j] = card;
                 cards.Remove(card);
-                card.MoveTo(GetCentralizedGridPos(i, j), shuffleAnim);
+                card.MoveTo(GetCentralizedGridPos(i, j), shuffleAnim);//Just move card to its new home
             }
         }
 
@@ -162,8 +162,8 @@ public class Board : MonoBehaviour
         }
 
         cardsMatrix = shuffledMatrix;//apply new matrix
-        timer.Resume();
-        TouchController.RemovePauseReason(gameObject);
+        TouchController.RemovePauseReason(gameObject);//Resume touch system
+        timer.Resume();//continue timer count
     }
 
     private void ComputeCenterOffset()//Need to centralize resized level
@@ -230,9 +230,9 @@ public class Board : MonoBehaviour
             }
         }
         getCardsAnim.Speed = getCardsStartSpeed;
-        yield return new WaitForSeconds(1f);//extra time to remember cards
+        yield return new WaitForSeconds(1f);//time to remember cards
 
-        for (int j = cardsMatrix.GetLength(1) - 1; j >= 0; j--)
+        for (int j = cardsMatrix.GetLength(1) - 1; j >= 0; j--)//flip to back
         {
             for (int i = 0; i < cardsMatrix.GetLength(0); i++)
             {
@@ -240,8 +240,8 @@ public class Board : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
         }
-        TouchController.RemovePauseReason(gameObject);
-        timer.Resume();
+        TouchController.RemovePauseReason(gameObject);//Resume touch system
+        timer.Resume();//Continue timer count
     }
 
     private Vector3 GetCentralizedGridPos(int i, int j)
@@ -263,8 +263,8 @@ public class Board : MonoBehaviour
         int cardsAmount = pairsAmount * deck.GroupSize;
         int width = deck.GroupSize;
         int height = pairsAmount;
-        //the closer the squareness is to 0, the closer the ratio is to 1
-        float squareness = Mathf.Abs(width / (float)height - height / (float)width);
+        //the closer the 'unsquareness' is to 0, the closer the ratio is to 1
+        float unsquareness = Mathf.Abs(width / (float)height - height / (float)width);
         for (int i = 1; i <= pairsAmount - deck.GroupSize; i++)
         {
             int curWidth = deck.GroupSize + i;
@@ -275,9 +275,9 @@ public class Board : MonoBehaviour
             int curHeight = cardsAmount / curWidth;
             float curSquareness = Mathf.Abs(curWidth / (float)curHeight - curHeight / (float)curWidth);
 
-            if (curSquareness < squareness)
+            if (curSquareness < unsquareness)
             {
-                squareness = curSquareness;
+                unsquareness = curSquareness;
                 width = curWidth;
                 height = curHeight;
             }
