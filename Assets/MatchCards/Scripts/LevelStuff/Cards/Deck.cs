@@ -41,6 +41,11 @@ public class Deck : MonoBehaviour
         }
     }
 
+    public void ClearBuffer()
+    {
+        cardsBuffer.Clear();
+    }
+
     private void CardToBuffer(Card card)
     {
         if(cardsBuffer.Count >= GroupSize)
@@ -52,7 +57,7 @@ public class Deck : MonoBehaviour
         if(cardsBuffer.Count == GroupSize)
         {
             TouchController.Clear();
-            TouchController.AddPauseReason(gameObject);
+            TouchController.TryAddPauseReason(gameObject);
             if (CheckMatch())
             {
                 Invoke(nameof(CompleteBuffer), 0.66f);

@@ -7,7 +7,6 @@ public class SaveService
 {
     private static IStorage storage;
 
-
     [Inject]
     public SaveService(IStorage storage)
     {

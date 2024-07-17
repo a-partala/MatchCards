@@ -34,13 +34,14 @@ public class TouchController
         ProcessTouch();
     }
 
-    public static void AddPauseReason(GameObject obj)
+    public static bool TryAddPauseReason(GameObject obj)
     {
         if (Instance.PauseReasons.Contains(obj))
         {
-            return;
+            return false;
         }
         Instance.PauseReasons.Add(obj);
+        return true;
     }
 
     public static void RemovePauseReason(GameObject obj)

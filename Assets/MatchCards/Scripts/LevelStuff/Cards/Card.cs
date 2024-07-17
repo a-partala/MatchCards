@@ -15,7 +15,7 @@ public class Card : MonoBehaviour, ITouchable
     [SerializeField] private MeshRenderer backRenderer;
     [SerializeField] private Animator animator;
     [SerializeField] private SerializedDictionary<State, string> stateAnimKeysMap = new();
-    private State state = State.Face;
+    public State MyState { get; private set; } = State.Face;
     public event Action OnFlippedToFace;
 
     public void Initialize(Material back, Material face)
@@ -27,11 +27,11 @@ public class Card : MonoBehaviour, ITouchable
 
     public void SetState(State state)
     {
-        if (this.state == state)
+        if (this.MyState == state)
         {
             return;//to avoid actions like unneccessary animations
         }
-        this.state = state;
+        this.MyState = state;
         SetAnim(state);
     }
 
@@ -52,7 +52,7 @@ public class Card : MonoBehaviour, ITouchable
 
     public void OnTouchDown()
     {
-        if(state == State.Back)
+        if(MyState == State.Back)
         {
             SetState(State.Face);
             OnFlippedToFace?.Invoke();
