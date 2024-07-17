@@ -20,7 +20,7 @@ public class Deck : MonoBehaviour
     public void CreateCards(int pairsAmount, float scale = 1f)
     {
         DeleteCards();
-        var back = GetBackMaterial(backID);//1 back material for all cards
+        var back = GetBackMaterial();//1 back material for all cards
         for (int i = 0; i < pairsAmount; i++)
         {
             var texture = cardFaces.textures[i];
@@ -34,7 +34,7 @@ public class Deck : MonoBehaviour
                 card.Initialize(back, face);
                 card.OnFlippedToFace += () =>
                 {
-                    CardToBuffer(card);
+                    AddToBuffer(card);
                 };
                 Cards.Add(card);
             }
@@ -42,7 +42,7 @@ public class Deck : MonoBehaviour
     }
 
     /// <summary>
-    /// Helps to reset turn. But only in logic
+    /// Resets turn cards
     /// </summary>
     public void ClearBuffer()
     {
@@ -53,7 +53,7 @@ public class Deck : MonoBehaviour
     /// Add card to the turn
     /// </summary>
     /// <param name="card"></param>
-    private void CardToBuffer(Card card)
+    private void AddToBuffer(Card card)
     {
         if(cardsBuffer.Count >= GroupSize)
         {
@@ -67,11 +67,11 @@ public class Deck : MonoBehaviour
             TouchController.TryAddPauseReason(gameObject);//because of next animations
             if (CheckMatch())
             {
-                Invoke(nameof(CompleteBuffer), 0.66f);
+                Invoke(nameof(CompleteBufferCards), 0.66f);
             }
             else
             {
-                Invoke(nameof(FlipBuffer), 0.66f);
+                Invoke(nameof(FlipBufferCardsToBack), 0.66f);
             }
         }
     }
@@ -79,7 +79,7 @@ public class Deck : MonoBehaviour
     /// <summary>
     /// Hides a turn's cards
     /// </summary>
-    private void FlipBuffer()
+    private void FlipBufferCardsToBack()
     {
         SetBuffer(Card.State.Back);
     }
@@ -88,7 +88,7 @@ public class Deck : MonoBehaviour
     /// <summary>
     /// Completes the turn's cards
     /// </summary>
-    private void CompleteBuffer()
+    private void CompleteBufferCards()
     {
         SetBuffer(Card.State.Hidden);
         OnMatchEvent?.Invoke();
@@ -133,16 +133,25 @@ public class Deck : MonoBehaviour
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    private Material GetBackMaterial(int id)
+    private Material GetBackMaterial()
     {
-        if (id < 0 || id >= cardBacks.textures.Length)
+        if(backID == -1)
         {
-            Debug.LogError("Deck>> Card back's id is over the array bounds");
-            id = 0;
+            backID = SaveService.GetInt(nameof(backID), 0);
         }
 
         var backMaterial = new Material(baseMaterial);
-        backMaterial.mainTexture = cardBacks.textures[id];
+        backMaterial.mainTexture = cardBacks.textures[backID];
         return backMaterial;
+    }
+    //
+    public void SetBack(int n)
+    {
+        if(n < 0 || n >= cardBacks.textures.Length)
+        {
+            n = 0;
+        }
+        backID = n;
+        SaveService.SetInt(nameof(backID), 0);
     }
 }

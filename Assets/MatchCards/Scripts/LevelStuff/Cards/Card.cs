@@ -31,6 +31,7 @@ public class Card : MonoBehaviour, ITouchable
         {
             return;//to avoid actions like unneccessary animations
         }
+        Audio.Play("Card");
         this.MyState = state;
         SetAnim(state);
     }

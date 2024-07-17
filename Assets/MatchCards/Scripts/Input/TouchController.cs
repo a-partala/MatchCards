@@ -27,11 +27,16 @@ public class TouchController
 
     public void Update()
     {
-        if (IsPaused || PauseReasons.Count > 0)
+        if (IsPaused || !IsWorking())
         {
             return;
         }
         ProcessTouch();
+    }
+
+    public static bool IsWorking()
+    {
+        return Instance.PauseReasons.Count == 0;
     }
 
     /// <summary>

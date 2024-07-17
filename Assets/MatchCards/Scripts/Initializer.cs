@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Initializer : MonoBehaviour
 {
+    [SerializeField] private Audio audioSystem;
     [SerializeField] private LevelUI levelUI;
     [SerializeField] private Board board;
     [SerializeField] private LevelsConfig levelsConfig;
@@ -10,6 +11,7 @@ public class Initializer : MonoBehaviour
 
     private void Awake()
     {
+        audioSystem.Initialize();
     }
 
     private void Start()

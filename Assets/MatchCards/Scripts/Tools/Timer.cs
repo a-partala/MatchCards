@@ -58,6 +58,7 @@ public class Timer
                 currentSeconds = 0;
                 OnChanged?.Invoke(currentSeconds);
                 OnTimeout?.Invoke();
+                yield break;
             }
             yield return null;
         }

@@ -74,7 +74,7 @@ public class Board : MonoBehaviour
     {
         PrepareTimer(level.TimerInSeconds);
         PrepareCards(level);
-        StartCoroutine(GetCardsAnim());
+        StartCoroutine(AppearCardsAnim());
     }
 
     private void PrepareCards(Level level)
@@ -118,7 +118,7 @@ public class Board : MonoBehaviour
         }
 
         Card[,] shuffledMatrix = new Card[cardsMatrix.GetLength(0), cardsMatrix.GetLength(1)];
-        for (int i = 0; i < shuffledMatrix.GetLength(0); i++)
+        for (int i = 0; i < shuffledMatrix.GetLength(0); i++)//Fill new matrix and play move animations
         {
             for (int j = 0; j < shuffledMatrix.GetLength(1); j++)
             {
@@ -139,31 +139,29 @@ public class Board : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(shuffleAnim.Speed);
+        yield return new WaitForSeconds(shuffleAnim.Speed);//wait for shuffle anim
 
-        for (int i = 0; i < deck.Cards.Count; i++)
-        {
-            if (deck.Cards[i].MyState != Card.State.Back)//Don't play unneccessary anim
-            {
-                continue;
-            }
-            deck.Cards[i].SetState(Card.State.Face);//Show card
-        }
+        SetCardsState(deck.Cards, Card.State.Back, Card.State.Face);//flip 'back' cards to 'face'
 
         yield return new WaitForSeconds(pauseAtShuffle);//couple of seconds to remember cards
 
-        for (int i = 0; i < deck.Cards.Count; i++)
-        {
-            if (deck.Cards[i].MyState != Card.State.Face)//Don't play unneccessary anim
-            {
-                continue;
-            }
-            deck.Cards[i].SetState(Card.State.Back);//Hide card
-        }
+        SetCardsState(deck.Cards, Card.State.Face, Card.State.Back);//flip them back
 
         cardsMatrix = shuffledMatrix;//apply new matrix
         TouchController.RemovePauseReason(gameObject);//Resume touch system
         timer.Resume();//continue timer count
+    }
+
+    private void SetCardsState(List<Card> cards, Card.State fromState, Card.State toState)
+    {
+        for (int i = 0; i < deck.Cards.Count; i++)
+        {
+            if (deck.Cards[i].MyState != fromState)//Don't play unneccessary anim
+            {
+                continue;
+            }
+            deck.Cards[i].SetState(toState);//Hide card
+        }
     }
 
     private void ComputeCenterOffset()//Need to centralize resized level
@@ -216,7 +214,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    private IEnumerator GetCardsAnim()
+    private IEnumerator AppearCardsAnim()
     {
         TouchController.TryAddPauseReason(gameObject);//Stop interactions
         float getCardsStartSpeed = getCardsAnim.Speed;

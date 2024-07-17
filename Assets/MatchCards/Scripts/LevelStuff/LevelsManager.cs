@@ -1,11 +1,14 @@
 using System;
 
+/// <summary>
+/// Class to manage levels
+/// </summary>
 public class LevelsManager
 {
-    private int levelID;
-    private int levelCounter;
+    private int levelID;//Actual ID
+    private int levelCounter;//Counter (doesn't get less)
     private Board board;
-    private LevelsConfig levelsConfig;
+    private LevelsConfig levelsConfig;//ScriptableObject with levels info
     public event Action OnVictory;
     public event Action OnFail;
     public event Action OnLevelStarted;
@@ -16,12 +19,17 @@ public class LevelsManager
         this.board = board;
         board.Initialize();
         board.OnAllCardsMatched += Win;
-        board.OnFailed += () => OnFail?.Invoke();
+        board.OnFailed += () =>
+        {
+            Audio.Play("Fail");
+            OnFail?.Invoke();
+        };
         Load();
     }
 
     private void Win()
     {
+        Audio.Play("Win");
         OnVictory?.Invoke();
     }
 

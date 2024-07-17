@@ -28,8 +28,14 @@ public class Audio : MonoBehaviour
             return s;
         }
     }
+    [SerializeField] private SwitchButton switchSoundButton;
     public List<AudioSource> sources = new();
     private bool canPlay = true;
+
+    public void Initialize()
+    {
+        switchSoundButton.SetActive(PlayerPrefs.GetInt(nameof(canPlay), 1) == 1);
+    }
 
     public static void Play(AudioClip clip)
     {
@@ -47,5 +53,11 @@ public class Audio : MonoBehaviour
     public static void Play(string name)
     {
         Play(Instance.SoundsMap.GetValueOrDefault(name));
+    }
+
+    public void SetSound(bool active)
+    {
+        canPlay = active;
+        PlayerPrefs.SetInt(nameof(canPlay), active ? 1 : 0);
     }
 }

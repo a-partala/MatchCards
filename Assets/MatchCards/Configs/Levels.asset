@@ -16,13 +16,13 @@ MonoBehaviour:
   - PairsAmount: 1
     TimerInSeconds: 10
   - PairsAmount: 2
-    TimerInSeconds: 30
+    TimerInSeconds: 10
   - PairsAmount: 3
-    TimerInSeconds: 60
+    TimerInSeconds: 15
   - PairsAmount: 6
-    TimerInSeconds: 60
+    TimerInSeconds: 20
   - PairsAmount: 8
-    TimerInSeconds: 60
+    TimerInSeconds: 30
   - PairsAmount: 9
     TimerInSeconds: 60
   - PairsAmount: 10
